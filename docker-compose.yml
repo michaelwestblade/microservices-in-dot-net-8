@@ -1,0 +1,6 @@
+﻿services:
+  todoapi:
+    image: todoapi
+    build:
+      context: .
+      dockerfile: TodoAPI/Dockerfile
