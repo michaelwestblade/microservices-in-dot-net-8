@@ -1,3 +1,4 @@
+using BuildingBlocks.Behaviors;
 using Marten;
 using Weasel.Core;
 
@@ -8,6 +9,7 @@ builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
