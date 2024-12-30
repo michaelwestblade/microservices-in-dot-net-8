@@ -17,12 +17,10 @@ public class GetProductByCategoryQueryValidator : AbstractValidator<GetProductBy
 }
 
 
-internal class GetProductByCategoryQueryHandler(IDocumentSession session, ILogger<GetProductByCategoryQueryHandler> logger): IQueryHandler<GetProductByCategoryQuery, GetProductByCategoryResult>
+internal class GetProductByCategoryQueryHandler(IDocumentSession session): IQueryHandler<GetProductByCategoryQuery, GetProductByCategoryResult>
 {
     public async Task<GetProductByCategoryResult> Handle(GetProductByCategoryQuery query, CancellationToken cancellationToken)
     {
-        logger.LogInformation($"GetProductByCategoryQueryHandler called with {query}");
-
         var products = await session.Query<Product>()
             .Where(p => p.CategoryIds.Contains(query.CategoryName))
             .ToListAsync();

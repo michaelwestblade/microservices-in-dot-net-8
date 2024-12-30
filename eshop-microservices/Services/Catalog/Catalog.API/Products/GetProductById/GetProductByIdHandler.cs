@@ -18,12 +18,10 @@ public class GetProductByIdQueryValidator : AbstractValidator<GetProductByIdQuer
     }
 }
 
-internal class GetProductByIdQueryHandler(IDocumentSession session, ILogger<GetProductsQueryHandler> logger): IQueryHandler<GetProductByIdQuery, GetProductByIdResult>
+internal class GetProductByIdQueryHandler(IDocumentSession session): IQueryHandler<GetProductByIdQuery, GetProductByIdResult>
 {
     public async Task<GetProductByIdResult> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
-        logger.LogInformation($"GetProductsQueryHandler called with {query}");
-
         var product = await session.LoadAsync<Product>(query.Id, cancellationToken);
 
         if (product is null)
