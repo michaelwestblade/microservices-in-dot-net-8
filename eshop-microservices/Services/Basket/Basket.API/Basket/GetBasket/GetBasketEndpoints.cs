@@ -1,6 +1,24 @@
+using Carter;
+using Mapster;
+using MediatR;
+
 namespace Basket.API.Basket.GetBasket;
 
-public class GetBasketEndpoints
+public class GetBasketEndpoints: ICarterModule
 {
-    
+    public void AddRoutes(IEndpointRouteBuilder app)
+    {
+        app.MapGet("/basket/{userName}", async (string userName, ISender sender) =>
+        {
+            var result = await sender.Send(new GetBasketQuery(userName));
+            var response = result.Adapt<GetBasketResponse>();
+            
+            return Results.Ok(response);
+        })
+        .WithName("GetBasketByUserName")
+        .Produces(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .WithSummary("Get basket by user name")
+        .WithDescription("Get basket by user name");
+    }
 }

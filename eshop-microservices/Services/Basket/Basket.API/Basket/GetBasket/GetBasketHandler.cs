@@ -3,17 +3,17 @@ using BuildingBlocks.CQRS;
 
 namespace Basket.API.Basket.GetBasket;
 
-public record GetBasketQuery(string UserName) : IQuery<GetBasketResult>;
+public record GetBasketQuery(string UserName) : IQuery<GetBasketResponse>;
 
-public record GetBasketResult(ShoppingCart Cart);
+public record GetBasketResponse(ShoppingCart Cart);
 
-public class GetBasketQueryHandler: IQueryHandler<GetBasketQuery, GetBasketResult>
+public class GetBasketQueryHandler: IQueryHandler<GetBasketQuery, GetBasketResponse>
 {
-    public async Task<GetBasketResult> Handle(GetBasketQuery request, CancellationToken cancellationToken)
+    public async Task<GetBasketResponse> Handle(GetBasketQuery request, CancellationToken cancellationToken)
     {
         // TODO: get basket from db
         //var basket = await _repository.GetBasket(request.UserName)
         
-        return new GetBasketResult(new ShoppingCart("SWN"));
+        return new GetBasketResponse(new ShoppingCart("SWN"));
     }
 }
