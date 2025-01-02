@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Data\" />
       <Folder Include="Exceptions\" />
     </ItemGroup>
 
@@ -17,6 +16,7 @@
 
     <ItemGroup>
       <PackageReference Include="Carter" Version="8.2.1" />
+      <PackageReference Include="Marten" Version="7.35.0" />
     </ItemGroup>
 
 </Project>
