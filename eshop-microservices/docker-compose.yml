@@ -5,6 +5,8 @@
     image: postgres
   distributedcache:
     image: redis
+  discountdb:
+    image: sqlite
   catalog.api:
     image: catalog.api
     build:
