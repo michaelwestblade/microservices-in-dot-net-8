@@ -43,13 +43,40 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
         return coupon.Adapt<CouponModel>();
     }
 
-    public override Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
+    public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
     {
-        return base.UpdateDiscount(request, context);
+        var coupon = request.Coupon.Adapt<Coupon>();
+
+        if (coupon is null)
+        {
+            logger.LogError("Failed to update discount");
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid request object."));
+        }
+        
+        dbContext.Coupons.Update(coupon);
+        await dbContext.SaveChangesAsync();
+        
+        logger.LogInformation($"Discount updated with ProductName: {coupon.ProductName}, Amount: {coupon.Amount}, Description: {coupon.Description}");
+        return coupon.Adapt<CouponModel>();
     }
 
-    public override Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
+    public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        return base.DeleteDiscount(request, context);
+        var coupon = await dbContext
+            .Coupons
+            .FirstOrDefaultAsync(x => x.ProductName == request.ProductName);
+
+        if (coupon is null)
+        {
+            logger.LogWarning("Coupon with productName {ProductName} not found", request.ProductName);
+            throw new RpcException(new Status(StatusCode.NotFound, $"No coupon found with ProductName {request.ProductName}."));
+        }
+        
+        logger.LogInformation($"Discount retrieved for ProductName: {coupon.ProductName}, Amount: {coupon.Amount}, Description: {coupon.Description}");
+        
+        dbContext.Coupons.Remove(coupon);
+        await dbContext.SaveChangesAsync();
+        
+        return new DeleteDiscountResponse{Success = true};
     }
 }
