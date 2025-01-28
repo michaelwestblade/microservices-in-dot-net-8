@@ -7,17 +7,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.csproj" />
+        <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.csproj"/>
+        <ProjectReference Include="..\..\..\Discount.Grpc\Discount.Grpc.csproj"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Protobuf Include="..\..\..\Discount.Grpc\Protos\discount.proto" GrpcServices="Client">
+            <Link>Protos\discount.proto</Link>
+        </Protobuf>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
-      <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
-      <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.0" />
-      <PackageReference Include="Carter" Version="8.2.1" />
-      <PackageReference Include="Marten" Version="7.35.0" />
-      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0" />
-      <PackageReference Include="Scrutor" Version="5.1.0" />
+        <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0"/>
+        <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0"/>
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.0"/>
+        <PackageReference Include="Carter" Version="8.2.1"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
+        <PackageReference Include="Marten" Version="7.35.0"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0"/>
+        <PackageReference Include="Scrutor" Version="5.1.0"/>
     </ItemGroup>
 
 </Project>
