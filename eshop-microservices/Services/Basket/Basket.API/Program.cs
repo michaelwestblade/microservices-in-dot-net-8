@@ -3,13 +3,14 @@ using Basket.API.Models;
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
 using Carter;
+using Discount.Grpc;
 using HealthChecks.UI.Client;
 using Marten;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
+// application services
 var assembly = typeof(Program).Assembly;
 builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
@@ -19,6 +20,7 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 
+// Data services
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
@@ -33,11 +35,13 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
-// builder.Services.AddScoped<IBasketRepository>(provider =>
-// {
-//     var basketRepository = provider.GetRequiredService<IBasketRepository>();
-//     return new CachedBasketRepository(basketRepository, provider.GetRequiredService<IDistributedCache>());
-// });
+// grpc services
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+});
+
+// cross cutting services
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("Database")!).AddRedis(builder.Configuration.GetConnectionString("Redis")!);
