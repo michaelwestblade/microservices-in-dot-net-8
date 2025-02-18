@@ -1,4 +1,5 @@
 using Ordering.Domain.Abstractions;
+using Ordering.Domain.Events;
 using Ordering.Domain.Models.Enums;
 using Ordering.Domain.Models.ValueObjects;
 
