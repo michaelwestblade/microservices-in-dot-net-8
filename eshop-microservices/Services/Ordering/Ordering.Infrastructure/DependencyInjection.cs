@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ordering.Infrastructure.Data;
 
 namespace Ordering.Infrastructure;
 
@@ -10,10 +12,10 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("Database");
         
-        // services.AddDBContext<ApplicationDBContext>(options =>
-        // {
-        //     options.UseSqlServer(connectionString)
-        // });
+        services.AddDbContext<ApplicationDBContext>(options =>
+        {
+            options.UseSqlServer(connectionString);
+        });
         
         return services;
     }
