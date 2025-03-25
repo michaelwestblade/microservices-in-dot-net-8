@@ -5,6 +5,9 @@
     image: postgres
   distributedcache:
     image: redis
+  orderdb:
+    image: mcr.microsoft.com/mssql/server
+    
   catalog.api:
     depends_on:
       - catalogdb
